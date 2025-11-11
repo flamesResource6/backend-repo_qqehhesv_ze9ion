@@ -11,8 +11,8 @@ Model name is converted to lowercase for the collection name:
 - BlogPost -> "blogs" collection
 """
 
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, Field, EmailStr
+from typing import Optional, Literal
 
 # Example schemas (replace with your own):
 
@@ -37,6 +37,28 @@ class Product(BaseModel):
     price: float = Field(..., ge=0, description="Price in dollars")
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
+
+# Photography portfolio specific schemas
+
+class Inquiry(BaseModel):
+    """
+    Leads from contact form
+    Collection name: "inquiry"
+    """
+    name: str = Field(..., min_length=2, max_length=100, description="Client full name")
+    email: EmailStr = Field(..., description="Client email address")
+    phone: Optional[str] = Field(None, max_length=25, description="Client phone number")
+    service_type: Optional[Literal[
+        "Wedding",
+        "Portrait",
+        "Event",
+        "Commercial",
+        "Product",
+        "Other"
+    ]] = Field(None, description="Type of photography service")
+    budget: Optional[str] = Field(None, description="Approximate budget range")
+    message: str = Field(..., min_length=10, max_length=2000, description="Project details from client")
+    source: Optional[str] = Field(None, description="How the client heard about us")
 
 # Add your own schemas here:
 # --------------------------------------------------
