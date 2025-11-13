@@ -13,6 +13,7 @@ Model name is converted to lowercase for the collection name:
 
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, Literal
+from datetime import date
 
 # Example schemas (replace with your own):
 
@@ -38,7 +39,7 @@ class Product(BaseModel):
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
 
-# Photography portfolio specific schemas
+# Photography/camerawork portfolio specific schemas
 
 class Inquiry(BaseModel):
     """
@@ -55,9 +56,11 @@ class Inquiry(BaseModel):
         "Commercial",
         "Product",
         "Other"
-    ]] = Field(None, description="Type of photography service")
+    ]] = Field(None, description="Type of service")
     budget: Optional[str] = Field(None, description="Approximate budget range")
-    message: str = Field(..., min_length=10, max_length=2000, description="Project details from client")
+    shoot_date: Optional[date] = Field(None, description="Requested shoot date")
+    requirements: str = Field(..., min_length=10, max_length=3000, description="Requirements and brief for the shoot")
+    message: Optional[str] = Field(None, max_length=2000, description="Additional notes from client")
     source: Optional[str] = Field(None, description="How the client heard about us")
 
 # Add your own schemas here:
